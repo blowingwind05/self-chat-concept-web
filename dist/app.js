@@ -14,6 +14,7 @@
   const sceneCounter = document.getElementById("scene-counter");
   const steps = Array.from(document.querySelectorAll(".core-steps li"));
   const revealElements = Array.from(document.querySelectorAll("[data-reveal]"));
+  const revealVisibility = new WeakMap();
   const navigation = Array.from(document.querySelectorAll(".site-header nav a[href^='#']"))
     .map((link) => ({ link, section: document.getElementById(link.hash.slice(1)) }))
     .filter(({ section }) => section);
@@ -106,7 +107,9 @@
       motionToggle.setAttribute("aria-label", motionPaused ? "开启页面动画" : "暂停页面动画");
     }
     if (motionLabel) motionLabel.textContent = motionPaused ? "动态 关" : "动态 开";
-    if (motionPaused) revealElements.forEach((element) => element.classList.add("is-visible"));
+    revealElements.forEach((element) => {
+      element.classList.toggle("is-visible", motionPaused || revealVisibility.get(element) === true);
+    });
     scheduleUpdate();
   }
 
@@ -126,14 +129,14 @@
   else motionPreference.addListener(preferenceChanged);
 
   if ("IntersectionObserver" in window) {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
+        // Enter after a small visible portion; reset only after fully leaving.
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.08) revealVisibility.set(entry.target, true);
+        else if (!entry.isIntersecting) revealVisibility.set(entry.target, false);
+        entry.target.classList.toggle("is-visible", motionPaused || revealVisibility.get(entry.target) === true);
       });
-    }, { threshold: 0.08, rootMargin: "0px 0px -24px 0px" });
+    }, { threshold: [0, 0.08], rootMargin: "0px 0px -24px 0px" });
     revealElements.forEach((element) => revealObserver.observe(element));
 
     const activityObserver = new IntersectionObserver((entries) => {
@@ -142,7 +145,10 @@
     document.querySelectorAll(".architecture-diagram, .hero, .core-sticky, .core-scene")
       .forEach((element) => activityObserver.observe(element));
   } else {
-    revealElements.forEach((element) => element.classList.add("is-visible"));
+    revealElements.forEach((element) => {
+      revealVisibility.set(element, true);
+      element.classList.add("is-visible");
+    });
     document.querySelectorAll(".architecture-diagram, .hero, .core-sticky, .core-scene")
       .forEach((element) => element.classList.add("is-inview"));
   }

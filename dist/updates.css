@@ -30,8 +30,8 @@
 
 /* The same saved messages become readable views, with their contents in place. */
 .core-results .result-grid{grid-auto-rows:clamp(144px,17vh,156px);gap:12px}
-html body .core-results .result-item{height:auto;min-width:0;display:block;padding:16px 17px;text-align:left;overflow:hidden;transition:transform .42s var(--ease),opacity .3s;transition-delay:calc(var(--item) * 40ms)}
-.result-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;color:#536e43}
+html body .core-results .result-item{height:auto;min-width:0;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;align-content:normal;gap:0;padding:16px 17px;text-align:left;overflow:hidden;transition:transform .42s var(--ease),opacity .3s;transition-delay:calc(var(--item) * 40ms)}
+.result-head{display:flex;align-items:center;flex:0 0 20px;gap:8px;margin-bottom:12px;color:#536e43}
 .result-head svg{width:18px;height:18px;flex-shrink:0;color:#76965d}
 .result-head h4{font-size:13px;line-height:1.4;font-weight:500;letter-spacing:.1px;margin:0}
 .result-entries{padding:0;margin:0;list-style:none}
@@ -77,7 +77,7 @@ html body .core-results .result-item{height:auto;min-width:0;display:block;paddi
 }
 @media screen and (max-width:760px){
   .core-results .result-grid{grid-auto-rows:156px}
-  html body .core-results .result-item{padding:17px;display:block}
+  html body .core-results .result-item{padding:17px}
   .core-results .result-head{margin-bottom:13px}
   .core-results .scene-caption{margin-top:25px}
 }
@@ -90,4 +90,25 @@ html body .core-results .result-item{height:auto;min-width:0;display:block;paddi
 @media print{
   .core-results .result-grid{grid-auto-rows:156px}
   .example-message mark{background-size:100% 75%}
+  .example-card .example-flow,.example-card .extracted{opacity:1!important;transform:none!important}
+}
+
+/* Leaving the viewport resets entrances; returning plays the same sequence. */
+@media screen{
+.js-ready [data-reveal]{transition-duration:.45s,.55s}
+.js-ready body:not(.motion-paused) .hero:not(.is-inview) :is(.title-line>span,.hero-enter,.hero-stage,.h-message){animation-name:none;opacity:0}
+.hero .title-line>span{animation-duration:.65s}
+.hero .hero-enter,.hero-stage{animation-duration:.55s}
+.js-ready body:not(.motion-paused) .example-card:not(.is-visible) :is(.example-flow,.extracted,.example-message mark){transition:none}
+.js-ready body:not(.motion-paused) .core-results:not(.is-inview) .result-item{opacity:0!important;transform:translateY(18px)!important;transition:none}
+}
+@media screen and (min-width:761px) and (min-height:621px){
+  .process-node{transition:opacity .3s ease-out,transform .35s var(--ease)}
+  .process-node.ai-node{transition-delay:80ms}
+  .js-ready body:not(.motion-paused) #core-section:not([data-stage="2"]) .process-node,
+  .js-ready body:not(.motion-paused) .core-process:not(.is-inview) .process-node{opacity:0;transform:translateY(14px);transition:none}
+}
+@media screen and (max-width:760px),screen and (max-height:620px){
+  .js-ready body:not(.motion-paused) .core-chat:not(.is-inview) .core-message{opacity:0!important;transform:translateY(12px)!important;transition:none}
+  .js-ready body:not(.motion-paused) .core-chat.is-inview .core-message{transition:opacity .25s,transform .35s var(--ease);transition-delay:calc(var(--item) * 35ms)}
 }
