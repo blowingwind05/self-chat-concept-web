@@ -7,10 +7,10 @@
   <meta name="description" content="一个只和自己聊天的 App。以给自己发消息为统一入口，云端长期保存，再由 AI 整理和归纳。项目构想展示。">
   <title>一个只和自己聊天的 App · 项目构想</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="stylesheet" href="styles.css?v=20">
-  <link rel="stylesheet" href="reading.css?v=20">
-  <link rel="stylesheet" href="updates.css?v=20">
-  <script src="app.js?v=20" defer></script>
+  <link rel="stylesheet" href="styles.css?v=21">
+  <link rel="stylesheet" href="reading.css?v=21">
+  <link rel="stylesheet" href="updates.css?v=21">
+  <script src="app.js?v=21" defer></script>
 </head>
 <body>
 <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -158,12 +158,32 @@
         <div class="core-results core-scene" data-core-scene="3">
           <span class="scene-label"><svg><use href="#i-folder"/></svg> 整理后的个人信息</span>
           <div class="result-grid">
-            <div class="result-item" style="--item:0"><svg><use href="#i-film"/></svg><strong>书单影单番单</strong></div>
-            <div class="result-item" style="--item:1"><svg><use href="#i-list"/></svg><strong>待办与提醒</strong></div>
-            <div class="result-item" style="--item:2"><svg><use href="#i-image"/></svg><strong>审美素材库</strong></div>
-            <div class="result-item" style="--item:3"><svg><use href="#i-book"/></svg><strong>学习与笔记</strong></div>
-            <div class="result-item" style="--item:4"><svg><use href="#i-history"/></svg><strong>生活回顾</strong></div>
-            <div class="result-item" style="--item:5"><svg><use href="#i-search"/></svg><strong>智能检索</strong></div>
+            <article class="result-item result-watch" style="--item:0" aria-labelledby="result-watch-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-film"/></svg><h4 id="result-watch-title">书单影单番单</h4></header>
+              <ul class="result-entries"><li><span>布达佩斯大饭店</span><small>电影 · 想看</small></li><li><span>冰菓</span><small>番剧 · 想补</small></li></ul>
+            </article>
+            <article class="result-item result-reminder" style="--item:1" aria-labelledby="result-reminder-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-list"/></svg><h4 id="result-reminder-title">待办与提醒</h4></header>
+              <div class="result-task"><span class="result-checkbox" aria-hidden="true"></span><div><p>给老师发邮件</p><span class="result-time">明早</span></div></div>
+            </article>
+            <article class="result-item result-aesthetic" style="--item:2" aria-labelledby="result-aesthetic-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-image"/></svg><h4 id="result-aesthetic-title">审美素材库</h4></header>
+              <div class="result-photo"><img src="assets/reference-architecture.png" alt="此前保存的黑白楼梯摄影" width="80" height="65" loading="lazy"><div><p>黑白建筑摄影</p><span>建筑</span><span>构图</span></div></div>
+            </article>
+            <article class="result-item result-notes" style="--item:3" aria-labelledby="result-notes-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-book"/></svg><h4 id="result-notes-title">学习与笔记</h4></header>
+              <div class="result-word"><p lang="en">serendipity</p><span>偶然发现美好事物的机缘</span></div>
+              <div class="result-file"><svg aria-hidden="true"><use href="#i-file"/></svg><span>讲稿_v3.pdf</span></div>
+            </article>
+            <article class="result-item result-memory" style="--item:4" aria-labelledby="result-memory-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-history"/></svg><h4 id="result-memory-title">生活回顾</h4></header>
+              <blockquote><span aria-hidden="true">“</span><p>今天终于把实验跑通了</p></blockquote>
+            </article>
+            <article class="result-item result-search" style="--item:5" aria-labelledby="result-search-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-search"/></svg><h4 id="result-search-title">智能检索</h4></header>
+              <div class="result-query"><svg aria-hidden="true"><use href="#i-search"/></svg><span>之前存的楼梯照片</span></div>
+              <div class="result-found"><img src="assets/reference-architecture.png" alt="匹配到的同一张楼梯摄影" width="34" height="28" loading="lazy"><span>黑白建筑摄影</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+            </article>
           </div>
           <p class="scene-caption">按需组织成各种可以使用的信息</p>
         </div>
@@ -189,8 +209,8 @@
     <div class="examples-block">
       <div class="examples-heading" data-reveal><span class="mono-label">FROM MESSAGES TO INFORMATION</span><h3>AI 整理的几种典型用法</h3><p>把随手发送的普通消息，转化为更方便使用的信息。</p></div>
       <div class="example-grid">
-        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-film"/></svg><h4>书影音清单</h4><span>01</span></div><span class="example-label">原始消息</span><p class="example-message">想看《布达佩斯大饭店》</p><div class="example-flow"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><svg><use href="#i-film"/></svg><div><strong>布达佩斯大饭店</strong><span>电影 · 想看</span></div><span class="extract-label">AI 提取</span></div></article>
-        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-list"/></svg><h4>待办事项</h4><span>02</span></div><span class="example-label">原始消息</span><p class="example-message">明早给老师发邮件</p><div class="example-flow"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><span class="todo-box"></span><div><strong>给老师发邮件</strong><span>待办 · 明早</span></div><span class="extract-label">AI 提取</span></div></article>
+        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-film"/></svg><h4>书影音清单</h4><span>01</span></div><span class="example-label">原始消息</span><p class="example-message">想看《<mark>布达佩斯大饭店</mark>》</p><div class="example-flow" aria-hidden="true"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><svg><use href="#i-film"/></svg><div><strong>布达佩斯大饭店</strong><span>电影 · 想看</span></div><span class="extract-label">AI 提取</span></div></article>
+        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-list"/></svg><h4>待办事项</h4><span>02</span></div><span class="example-label">原始消息</span><p class="example-message"><mark>明早</mark><mark>给老师发邮件</mark></p><div class="example-flow" aria-hidden="true"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><span class="todo-box"></span><div><strong>给老师发邮件</strong><span>待办 · 明早</span></div><span class="extract-label">AI 提取</span></div></article>
       </div>
       <div class="example-more"><div data-reveal><svg><use href="#i-link"/></svg><h4>关联与检索</h4><p>不同时间保存的相关论文、想法和笔记可以被关联起来；即使忘记原来的措辞，也能通过描述找回内容。</p></div><div data-reveal><svg><use href="#i-history"/></svg><h4>生活回顾</h4><p>整理一段时间内发生过的事情、完成过的任务和记录过的想法，并能追溯到对应的原始消息。</p></div></div>
       <p class="concept-note" data-reveal>AI 整理的结果应当能够追溯来源。识别不准确时可以手动纠正；涉及提醒、删除或其他实际操作时，也需要考虑用户确认机制。</p>
