@@ -190,7 +190,7 @@
   function miniChat(x,y,w,h,t=0,dark=false){
     shadow(()=>rr(x,y,w,h,18,C.white,"#d6e0c8"),"#0d241d25",35,20);
     rr(x+18,y+18,34,34,10,C.pale);icon("chat",x+24,y+24,22);
-    text("给自己",x+65,y+20,18,C.ink,500);text("我的聊天记录",x+65,y+46,11,"#94a183");
+    text("给自己发消息",x+65,y+20,18,C.ink,500);text("我的聊天记录",x+65,y+46,11,"#94a183");
     line(x+15,y+72,x+w-15,y+72,"#e1e7d8");
     let yy=y+94;
     ["想看《布达佩斯大饭店》","明早给老师发邮件"].forEach((s,i)=>{const bw=Math.min(w-46,i?175:230);rr(x+w-bw-20,yy,bw,36,9,C.pale);text(s,x+w-bw-7,yy+10,i?12:11,"#4e6b3c");yy+=49});
@@ -231,6 +231,20 @@
     icon(purposes[purpose][0],x+10*sx,y+(h-is)/2,is,"#7c9b61");
     rr(x+44*sx,y+h*.34,w*.47,3.5*sy,2*sy,"#b4c79f");
     rr(x+44*sx,y+h*.62,w*.29,3.5*sy,2*sy,"#c8d6b8");
+  }
+  function chatContent(slot){
+    const m=CHAT_ITEMS[slot.index];
+    ctx.save();ctx.translate(slot.x,slot.y);ctx.scale(slot.sx,slot.sy);
+    ctx.beginPath();ctx.roundRect(0,0,m.w,m.h,10);ctx.clip();
+    if(m.photo)photoCrop(4,4,m.w-8,m.h-8,7);
+    else if(m.file){
+      icon(m.type,12,10,26,"#7f9a65");text(m.file,50,6,17,C.ink,500);text(m.detail,50,28,11,"#8c9e77");
+    }else if(m.word){
+      text("serendipity",13,6,22,C.ink,400,"left","Georgia,serif");
+      text("偶然发现美好事物的机缘",13,30,11,"#788e63");
+    }else if(m.lines)lines(m.lines,13,7,15,"#4d663d",400,1.5);
+    else text(m.text,13,8,17,"#4d663d");
+    ctx.restore();
   }
   function sceneTitle(t){
     background(false,t);head(0,"一段关于记录、保存与整理的设想");
@@ -610,7 +624,7 @@
     ctx.strokeStyle=color;ctx.lineWidth=1.25;ctx.stroke();ctx.restore();
   }
   function fusionLayout(t){
-    const zoom=clamp((t-1.2)/4.53);
+    const zoom=clamp((t-1.05)/.55);
     return {zoom,x:lerp(1168,830,zoom),y:lerp(290,112,zoom),w:lerp(310,580,zoom),h:lerp(460,720,zoom)};
   }
   function fusionFlightPoints(index,arrive){
@@ -626,22 +640,30 @@
       shadow(()=>rr(x,y,w,h,lerp(17,20,zoom),C.white,"#cfddbf"),"#2545231c",40,20);
       const pad=lerp(16,22,zoom),header=lerp(67,77,zoom),avatar=lerp(29,40,zoom),fs=lerp(15,21,zoom);
       rr(x+pad,y+18,avatar,avatar,lerp(9,12,zoom),C.pale);
-      icon("chat",x+pad+avatar*.2,y+18+avatar*.2,avatar*.6);
-      text("给自己发消息",x+pad+avatar+12,y+17,fs,C.ink,600);
-      text("我的聊天记录",x+pad+avatar+12,y+lerp(41,45,zoom),lerp(10,13,zoom),"#92a27e");
+      icon("chat",x+pad+avatar*.2,y+18+avatar*.2,lerp(17.4,25,zoom));
+      text("给自己发消息",x+pad+lerp(41,55,zoom),y+17,fs,C.ink,600);
+      text("我的聊天记录",x+pad+lerp(41,55,zoom),y+lerp(41,45,zoom),lerp(10,13,zoom),"#92a27e");
       group(zoom,0,0,()=>text("概念示意",x+w-pad,y+26,12,"#94a780",400,"right"));
       line(x+pad,y+header,x+w-pad,y+header,"#e0e7d5");
       const bodyTop=y+header+13,bodyBottom=y+h-59,slots=chatSlots(x,y,w,h,pad,header);
       ctx.save();ctx.beginPath();ctx.rect(x+pad,bodyTop,w-pad*2,bodyBottom-bodyTop+1);ctx.clip();
       const received=events.filter(e=>t>=e.arrive);
       received.forEach((e,k)=>{
-        const slot=slots[k];
-        chatBubbleFrame(slot);chatPlaceholder(slot,e.index);
+        const slot=slots[k],visible=enter(t,e.arrive+.04,.14);
+        chatBubbleFrame(slot);
+        group(1-visible,0,0,()=>chatPlaceholder(slot,e.index));
+        group(visible,0,0,()=>chatContent(slot));
       });
+      canvas.dataset.messages=String(received.filter(e=>t>=e.arrive+.18).length);
       ctx.restore();
       rr(x+pad,y+h-38,w-pad*2,24,6,"#edf2e6");
       text("给自己发消息…",x+pad+lerp(10,12,zoom),y+h-33,lerp(9,10,zoom),"#98a98a");
     });
+  }
+  function chatExplanation(){
+    lines(["所有信息先作为普通消息，","进入同一条时间线。"],114,475,25,C.muted,400,1.95);
+    line(115,625,173,625,"#91ac74",2);
+    text("不需要提前判断它属于哪个分类。",115,661,19,"#8a9c77");
   }
   function scenePurposes(){
     // This whole sequence is choreographed in real playback seconds. Its
@@ -649,15 +671,15 @@
     const t=motionLocalTime;
     background(false,t);head(4,"核心理念");
     const order=CHAT_SOURCE_ORDER;
-    const events=order.map((index,n)=>({index,start:1.05+n*.36,arrive:1.05+n*.36+1.8}));
+    const events=order.map((index,n)=>({index,start:.55+n*.22,arrive:.55+n*.22+1.12}));
     const {zoom,x,y,w,h}=fusionLayout(t);
-    const initialTitle=1-smooth((t-1.8)/.5);
+    const initialTitle=1-smooth((t-1.0)/.3);
     group(initialTitle,0,0,()=>text("多种用途，一个聊天入口。",800,157,60,C.ink,600,"center"));
     const source={x:136,y:286,w:280,h:108,gap:22};
     const positions=purposes.map((_,i)=>({x:source.x+(i%3)*(source.w+source.gap),y:source.y+Math.floor(i/3)*(source.h+source.gap)}));
     purposes.forEach(([name,label],i)=>{
       const e=events.find(v=>v.index===i),p=positions[i],ready=enter(t,.06+i*.035,.4);
-      const gone=smooth((t-e.start)/.15),a=ready*(1-gone);
+      const gone=smooth((t-e.start)/.12),a=ready*(1-gone);
       group(a,0,(1-ready)*20,()=>{
         rr(p.x,p.y,source.w,source.h,15,"#f8fbf2","#d5e1c8");
         icon(name,p.x+source.w/2-16,p.y+21,32,"#729454");
@@ -670,17 +692,17 @@
     // Right column leaves first, so later rows cross vacated cells rather than
     // covering labels that are still being read. At most two pieces share a lane.
     events.forEach(e=>{
-      const flight=clamp((t-e.start-.15)/1.65);
-      if(t<e.start+.15||t>=e.arrive)return;
+      const flight=clamp((t-e.start-.12)/1.0);
+      if(t<e.start+.12||t>=e.arrive)return;
       const s=positions[e.index],points=fusionFlightPoints(e.index,e.arrive);
       const curveProgress=fusionParameterAtDistance(points,flight),p=fusionBezier(...points,curveProgress);
       const row=order.indexOf(e.index),target=fusionLayout(e.arrive);
       const targetSlot=chatSlots(target.x,target.y,target.w,target.h,lerp(16,22,target.zoom),lerp(67,77,target.zoom))[row];
-      const morph=smooth((flight-.7)/.3),appearance=enter(t,e.start+.15,.15);
+      const morph=smooth((flight-.7)/.3),appearance=enter(t,e.start+.12,.12);
       const width=lerp(202,targetSlot.w,morph),height=lerp(51,targetSlot.h,morph);
       const slot={x:p.x-width/2,y:p.y-height/2,w:width,h:height,r:lerp(9,targetSlot.r,morph),sx:width/CHAT_ITEMS[row].w,sy:height/CHAT_ITEMS[row].h,index:row};
       group(appearance,0,0,()=>{
-        if(t<4.35)fusionPath(points,curveProgress,"#a2bd89",.45);
+        if(t<2.8)fusionPath(points,curveProgress,"#a2bd89",.45);
         rr(slot.x,slot.y,width,height,slot.r,C.white);
         group(1-morph,0,0,()=>{
           shadow(()=>rr(slot.x,slot.y,width,height,slot.r,null,"#b8cea1"),"#62804312",12,6);
@@ -691,18 +713,16 @@
         group(morph,0,0,()=>{chatBubbleFrame(slot);chatPlaceholder(slot,e.index)});
       },1,p.x,p.y,(flight<.8?Math.sin(flight*Math.PI)*.035:0)*(s.y<500?1:-1));
     });
-    group(enter(t,.7,.3)*(1-smooth((t-4.25)/.35)),0,0,()=>subtitle(["不需要提前分类，直接发送。"]));
-    const finalTitle=enter(t,4.35,.35);
+    group(enter(t,.35,.25)*(1-smooth((t-2.3)/.3)),0,0,()=>subtitle(["不需要提前分类，直接发送。"]));
+    const finalTitle=enter(t,2.8,.3);
     group(finalTitle,0,(1-finalTitle)*25,()=>{
       lines(["多种用途，","一个聊天入口。"],110,258,58,C.ink,600,1.4);
-      lines(["所有信息先作为普通消息，","进入同一条时间线。"],114,475,25,C.muted,400,1.95);
-      line(115,625,173,625,"#91ac74",2);
-      text("不需要提前判断它属于哪个分类。",115,661,19,"#8a9c77");
+      chatExplanation();
     });
   }
 
   const messageDelays=[0.15,0.49,0.83,1.17,1.51,1.85,2.19,2.53,2.87];
-  function fullChat(x,y,w,t){
+  function fullChat(x,y,w,t,itemOpacity=null){
     const s=portrait?1.18:1,h=720*s;
     shadow(()=>rr(x,y,w,h,20,C.white,"#cfddbf"),"#2545231c",40,20);
     const pad=22*s;rr(x+pad,y+18*s,40*s,40*s,12*s,C.pale);icon("chat",x+pad+8*s,y+26*s,25*s);
@@ -713,33 +733,49 @@
     ctx.beginPath();ctx.rect(x+pad-3,y+87*s,w-pad*2+6,h-139*s);ctx.clip();
     let count=0;
     items.forEach((m,i)=>{
-      const p=enter(t,messageDelays[i],.16),slot=slots[i],bw=slot.w,hh=slot.h,xx=slot.x,yy=slot.y;
+      const p=enter(t,messageDelays[i],.16),slot=slots[i];
       if(p>.8)count++;
-      chatBubbleFrame(slot);
-      if(p<1)group(1-p,0,0,()=>chatPlaceholder(slot,CHAT_SOURCE_ORDER[i]));
-      group(p,0,0,()=>{
-        if(m.photo)photoCrop(xx+4*s,yy+4*s,bw-8*s,hh-8*s,7*s);
-        else if(m.file){icon(m.type,xx+12*s,yy+(portrait?23:10*s),portrait?40:26*s,"#7f9a65");text(m.file,xx+(portrait?76:50*s),yy+(portrait?12:6*s),portrait?29:17*s,C.ink,500);text(m.detail,xx+(portrait?76:50*s),yy+(portrait?51:28*s),portrait?20:11*s,"#8c9e77")}
-        else if(m.word){text("serendipity",xx+13*s,yy+(portrait?9:6*s),portrait?36:22*s,C.ink,400,"left","Georgia,serif");text("偶然发现美好事物的机缘",xx+13*s,yy+(portrait?56:30*s),portrait?23:11*s,"#788e63")}
-        else if(m.lines)lines(m.lines,xx+13*s,yy+(portrait?15:7*s),portrait?27:15*s,"#4d663d",400,1.5);
-        else text(m.text,xx+13*s,yy+(portrait?13:8*s),portrait?30:17*s,"#4d663d");
+      group(itemOpacity?itemOpacity(i):1,0,0,()=>{
+        chatBubbleFrame(slot);
+        if(p<1)group(1-p,0,0,()=>chatPlaceholder(slot,CHAT_SOURCE_ORDER[i]));
+        group(p,0,0,()=>chatContent(slot));
       });
     });
     ctx.restore();
     rr(x+pad,y+h-38*s,w-pad*2,24*s,6*s,"#edf2e6");text("给自己发消息…",x+pad+12*s,y+h-33*s,10*s,"#98a98a");
     canvas.dataset.messages=String(count);
   }
+  function chatTitleWave(t){
+    const old=["多种用途，","一个聊天入口。"];
+    old.forEach((value,row)=>{
+      const y=258+row*58*1.4,p=enter(t,row*.035,.19);
+      if(p>=1)return;
+      ctx.save();ctx.beginPath();ctx.rect(105,y-3,700,85);ctx.clip();
+      text(value,110,y-90*p,58,C.ink,600);ctx.restore();
+    });
+    let order=0;
+    ["想到什么，","直接发条消息。"].forEach((value,row)=>{
+      const y=258+row*84;let x=110;
+      ctx.save();ctx.beginPath();ctx.rect(105,y-4,700,88);ctx.clip();
+      for(const char of value){
+        font(60,600);const width=ctx.measureText(char).width;
+        const p=clamp((t-.16-order*.026)/.30);
+        if(p>0){const dy=(1-ease(p))*36+Math.sin(p*Math.PI*2)*(1-p)*3;group(Math.min(1,p*2),0,0,()=>text(char,x,y+dy,60,C.ink,600))}
+        x+=width;order++;
+      }
+      ctx.restore();
+    });
+  }
   function sceneChat(t){
     background(false,t);head(5,"同一个聊天入口");
     if(portrait){
       reveal(t,.1,()=>text("给自己发消息。",65,190,61,C.ink,600));
       reveal(t,.6,()=>text("我的聊天记录 · 先留下来，再慢慢整理",67,285,25,C.muted));
-      reveal(t,0,()=>fullChat(90,360,720,t),35,.9);
+      reveal(t,0,()=>fullChat(90,360,720,4),35,.9);
     }else{
-      reveal(t,.1,()=>lines(["想到什么，","直接发条消息。"],110,258,60,C.ink,600,1.4));
-      reveal(t,1,()=>paragraph("所有信息首先作为普通消息，进入同一条时间线。",114,475,490,25,C.muted,1.95));
-      reveal(t,2.2,()=>{line(115,625,173,625,"#91ac74",2);text("不需要提前判断它属于哪个分类。",115,661,19,"#8a9c77")});
-      reveal(t,0,()=>fullChat(830,112,580,t),35,.9);
+      chatTitleWave(t);
+      chatExplanation();
+      reveal(t,0,()=>fullChat(830,112,580,4),35,.9);
     }
   }
   // One continuous shot: the same messages are retained, processed and reused.
@@ -757,12 +793,22 @@
       const deep=name==="spark",fg=deep?"#f0f5e7":C.ink;
       shadow(()=>rr(x,402,230,206,18,deep?C.green:C.white,deep?C.green:"#cedbbf"),"#244c2f0c",20,8);
       rr(x+23,423,45,45,13,deep?"#386a4b":"#e5eed8");
-      icon(name,x+31,431,29,deep?"#d0e4ab":"#719450");
+      if(deep){
+        const pulse=1+.055*Math.sin((t-start)*Math.PI*2/1.7);
+        group(1,0,0,()=>icon(name,x+31,431,29,"#d0e4ab"),pulse,x+45.5,445.5);
+        for(let i=0;i<3;i++)group(.28+.65*(.5+.5*Math.sin((t-start)*5-i*.9)),0,0,()=>circle(x+180+i*10,500,2.4,C.lime));
+      }else{
+        icon(name,x+31,431+cloudBob(t),29,"#719450");
+        for(const e of cloudEvents()){
+          const p=(t-e.arrive)/.3;
+          if(p>=0&&p<1)group((1-p)*.36,0,0,()=>circle(x+45.5,445.5+cloudBob(t),17+p*10,null,"#739b55",1.3));
+        }
+      }
       text(title,x+23,483,25,fg,500);
       lines(detail,x+23,527,17,deep?"#bed0aa":"#7b906a",400,1.75);
-      if(deep&&t>5.05&&t<6.35){
-        const q=clamp((t-5.05)/1.3);ctx.save();ctx.beginPath();ctx.roundRect(x+1,403,228,204,17);ctx.clip();
-        line(x+12,lerp(416,594,q),x+218,lerp(416,594,q),"#cfe397",1.3);ctx.restore();
+      if(deep&&t>4.92){
+        const q=((t-4.92)%1.85)/1.85;ctx.save();ctx.beginPath();ctx.roundRect(x+1,403,228,204,17);ctx.clip();
+        group(Math.sin(q*Math.PI)*.22,0,0,()=>line(x+12,lerp(522,590,q),x+218,lerp(522,590,q),"#cfe397",1.3));ctx.restore();
       }
     },0,14,.28);
   }
@@ -770,6 +816,35 @@
     if(t<start||t>=start+duration)return;
     const p=pathPoint(points,(t-start)/duration);
     rr(p.x-13,p.y-13,26,26,8,C.white,"#a7bd8e");icon(type,p.x-8,p.y-8,16,"#6e9451");
+  }
+  function cloudBob(t){return Math.sin((t-.95)*Math.PI*2/2.8)*3.2}
+  function cloudEvents(){
+    return [1.65,5.8].flatMap((round,cycle)=>CHAT_ITEMS.map((_,index)=>({index,cycle,start:round+index*.32,arrive:round+index*.32+.62,restore:round+3.53})));
+  }
+  function cloudSourceOpacity(index,t){
+    for(const e of cloudEvents()){
+      if(e.index!==index||t<e.start||t>=e.restore+.2)continue;
+      if(t<e.restore)return lerp(1,.18,clamp((t-e.start)/.12));
+      return lerp(.18,1,smooth((t-e.restore)/.2));
+    }
+    return 1;
+  }
+  function cloudMessageFlights(t){
+    const slots=chatSlots(0,0,580);
+    for(const e of cloudEvents()){
+      if(t<e.start||t>=e.arrive)continue;
+      const source=slots[e.index],p=(t-e.start)/.62;
+      const start={x:85+(source.x+source.w/2)*.52,y:317.8+(source.y+source.h/2)*.52};
+      const end={x:505.5,y:445.5+cloudBob(e.arrive)};
+      const points=[start,{x:start.x+92,y:start.y},{x:435,y:397},end];
+      const u=fusionParameterAtDistance(points,p),pos=fusionBezier(...points,u),morph=smooth((p-.35)/.65);
+      const w=lerp(source.w*.52,28,morph),h=lerp(source.h*.52,28,morph),m=CHAT_ITEMS[e.index];
+      const slot={x:pos.x-w/2,y:pos.y-h/2,w,h,r:lerp(source.r*.52,8,morph),sx:w/m.w,sy:h/m.h,index:e.index};
+      rr(slot.x,slot.y,w,h,slot.r,C.pale,"#c5d5b3");
+      group(1-morph,0,0,()=>chatContent(slot));
+      const type=m.photo?"image":m.file?m.type:m.word?"book":m.lines?"file":e.index===0||e.index===5?"film":e.index===1?"list":"history";
+      group(morph,0,0,()=>icon(type,pos.x-9,pos.y-9,18,"#70944f"));
+    }
   }
   function flowResult(index,x,y,t){
     const start=6.53+index*.36;
@@ -812,19 +887,19 @@
 
     const zoom=smooth(t/.58),scale=lerp(1,.52,zoom),x=lerp(830,85,zoom),y=lerp(112,317.8,zoom);
     flowPart("node",0,{x:75,y:275,w:325,h:435},()=>{
-      ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);fullChat(0,0,580,4);ctx.restore();
+      ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);fullChat(0,0,580,4,index=>cloudSourceOpacity(index,t));ctx.restore();
       cardEnter(t,.7,()=>text("原始消息与附件",235.8,277,20,"#718565",400,"center"),0,9,.22);
     });
     flowPart("node",1,{x:450,y:392,w:250,h:285},()=>{
       flowNode(460,"cloud","云端存储",["消息与附件","完整历史记录"],t,.95);
-      cardEnter(t,3.065,()=>{rr(460,632,230,34,8,"#e4edd7");icon("check",477,640,18,"#70954e");text("原始记录完整保存",505,642,16,"#63824d")},0,8,.22);
+      cardEnter(t,4.85,()=>{rr(460,632,230,34,8,"#e4edd7");icon("check",477,640,18,"#70954e");text("原始记录完整保存",505,642,16,"#63824d")},0,8,.22);
     });
     flowPart("node",2,{x:745,y:392,w:250,h:285},()=>{
       flowNode(755,"spark","AI 处理",["识别 · 提取 · 关联","整理结果单独保存"],t,3.5);
       cardEnter(t,8.7,()=>text("可修改、纠正或重新生成",870,641,16,"#7d906b",400,"center"),0,8,.22);
     });
 
-    flowPart("connection",0,{x:381,y:476,w:668,h:60},()=>{
+    flowPart("connection",0,{x:75,y:300,w:974,h:410},()=>{
       const paths2=[[[386.6,505],[460,505]],[[690,505],[755,505]],[[985,505],[1045,505]]];
       const starts=[1.5,3.75,5.75];
       paths2.forEach((p,i)=>{
@@ -832,7 +907,7 @@
         dotLine(p,q,"#9bb785",1.6);
         if(q===1){const end=p[p.length-1];line(end[0]-7,end[1]-4,end[0],end[1],"#9bb785",1.6);line(end[0]-7,end[1]+4,end[0],end[1],"#9bb785",1.6)}
       });
-      flowPacket(paths2[0],t,2.285,.5,"film");flowPacket(paths2[0],t,2.565,.5,"list");
+      cloudMessageFlights(t);
       ["film","list","image"].forEach((type,i)=>flowPacket(paths2[1],t,4.92+i*.22,.66,type));
       results.forEach(([type],i)=>flowPacket(paths2[2],t,6.05+i*.36,.48,type));
     });
@@ -1129,16 +1204,16 @@
     {start:14,end:23,label:"零碎的生活记录",description:"我会留下喜欢的摄影作品、想看的书和电影、想补的番；零碎消息也成了生活记录。",sourceTimes:[[0.0,0],[2.3625,4.35],[3.0,7],[5.3625,11.35],[6.0,14],[8.3625,18.35],[9,21]],draw:sceneMemory},
     {start:23,end:34,label:"现有方案的不便",description:"我用微信、QQ 时同一账号只能同时登录一台电脑、本地记录需要保留与迁移、云端漫游有期限和范围；飞书仅作补充例子。记录灵感时，希望少一些新建文档与分类的步骤。",sourceTimes:[[0,0],[11,11]],draw:sceneFriction},
     {start:34,end:40,label:"想自己做一个",description:"macOS、Windows 和 Linux 分别连接云端，找回完整历史记录。",sourceTimes:[[0.0,0],[3.75,5],[4.65,11.5],[6,18]],draw:sceneNeed},
-    {start:40,end:47,label:"核心理念",description:"九种用途沿各自路径成为消息，共同进入唯一聊天入口，保留在同一条时间线。",sourceTimes:[[0,0],[5.85,11.15],[6.45,13.75],[7,18]],draw:scenePurposes},
-    {start:47,end:51,label:"给自己发消息",description:"原案中的八条文字和文件消息，以及建筑摄影。",sourceTimes:[[0,0],[4,4]],draw:sceneChat},
-    {start:51,end:64,label:"从消息到信息",description:"同一画面展示消息进入云端完整保存，再进行 AI 处理，形成带有原案例子的六种信息视图。整理结果单独保存，可以修改或重新生成。",sourceTimes:[[0,0],[13,13]],draw:sceneProcess},
-    {start:64,end:73,label:"常用操作",description:"消息与文件传输、编辑、预览、搜索，以及离线缓存、备份恢复和完整导出。",sourceTimes:[[0.0,0],[3.375,6],[4.2,9.6],[4.5,10],[7.875,16],[9,20]],draw:sceneFeatures},
-    {start:73,end:80,label:"六平台与自托管",description:"六个平台各自使用客户端或浏览器，连接同一服务端；初期计划支持自托管。",sourceTimes:[[0.0,0],[4.34,6.2],[5.04,8],[5.67,8.9],[7,18]],draw:sceneDevices},
-    {start:80,end:91,label:"身份验证与网络安全",description:"安全身份认证、设备与会话管理、HTTPS 传输加密、数据访问控制、基本限流与防护。",sourceTimes:[[0.0,0],[1.7875,2.6],[2.75,7],[5.5,15],[11,30]],draw:sceneBasicSecurity},
-    {start:91,end:95,label:"AI 与隐私",description:"用户应知道哪些数据会送往外部模型服务，并控制 AI 处理范围。",sourceTimes:[[0.0,0],[2.16,2.7],[4,8]],draw:scenePrivacy},
-    {start:95,end:103,label:"初步技术设想",description:"候选技术方案尚未确定，先可靠保存，再由独立任务进行 AI 处理。",sourceTimes:[[0.0,0],[3.854545,5.8],[4.363636,11.6],[4.654545,12],[6.909091,15.1],[8,24]],draw:sceneArchitecture},
-    {start:103,end:109,label:"开发规划",description:"五个开发阶段，基础安全从第一阶段开始。",sourceTimes:[[0.0,0],[4.8,7.2],[6,20]],draw:sceneRoadmap},
-    {start:109,end:114,label:"最后想做成的样子",description:"一个真正能长期用下去的文件传输助手。相关功能尚待开发。",sourceTimes:[[0.0,0],[3.583333,4.3],[5,13]],draw:sceneEnd}
+    {start:40,end:44.5,label:"核心理念",description:"九种用途沿各自路径成为消息，共同进入唯一聊天入口，保留在同一条时间线。",sourceTimes:[[0,0],[4.5,4.5]],draw:scenePurposes},
+    {start:44.5,end:47,label:"给自己发消息",description:"原案中的八条文字和文件消息，以及建筑摄影。",sourceTimes:[[0,0],[2.5,2.5]],draw:sceneChat},
+    {start:47,end:58,label:"从消息到信息",description:"同一画面展示消息逐条进入云端完整保存，再进行 AI 处理，形成带有原案例子的六种信息视图。整理结果单独保存，可以修改或重新生成。",sourceTimes:[[0,0],[11,11]],draw:sceneProcess},
+    {start:58,end:67,label:"常用操作",description:"消息与文件传输、编辑、预览、搜索，以及离线缓存、备份恢复和完整导出。",sourceTimes:[[0.0,0],[3.375,6],[4.2,9.6],[4.5,10],[7.875,16],[9,20]],draw:sceneFeatures},
+    {start:67,end:74,label:"六平台与自托管",description:"六个平台各自使用客户端或浏览器，连接同一服务端；初期计划支持自托管。",sourceTimes:[[0.0,0],[4.34,6.2],[5.04,8],[5.67,8.9],[7,18]],draw:sceneDevices},
+    {start:74,end:85,label:"身份验证与网络安全",description:"安全身份认证、设备与会话管理、HTTPS 传输加密、数据访问控制、基本限流与防护。",sourceTimes:[[0.0,0],[1.7875,2.6],[2.75,7],[5.5,15],[11,30]],draw:sceneBasicSecurity},
+    {start:85,end:89,label:"AI 与隐私",description:"用户应知道哪些数据会送往外部模型服务，并控制 AI 处理范围。",sourceTimes:[[0.0,0],[2.16,2.7],[4,8]],draw:scenePrivacy},
+    {start:89,end:97,label:"初步技术设想",description:"候选技术方案尚未确定，先可靠保存，再由独立任务进行 AI 处理。",sourceTimes:[[0.0,0],[3.854545,5.8],[4.363636,11.6],[4.654545,12],[6.909091,15.1],[8,24]],draw:sceneArchitecture},
+    {start:97,end:103,label:"开发规划",description:"五个开发阶段，基础安全从第一阶段开始。",sourceTimes:[[0.0,0],[4.8,7.2],[6,20]],draw:sceneRoadmap},
+    {start:103,end:108,label:"最后想做成的样子",description:"一个真正能长期用下去的文件传输助手。相关功能尚待开发。",sourceTimes:[[0.0,0],[3.583333,4.3],[5,13]],draw:sceneEnd}
   ];
   function sourceTime(scene,local){
     const points=scene.sourceTimes;
@@ -1203,7 +1278,7 @@
       const pad=lerp(18,24,p),is=lerp(34,42,p);
       rr(x+pad,y+pad,is,is,lerp(10,12,p),C.pale);icon("chat",x+pad+lerp(6,9,p),y+pad+lerp(6,9,p),lerp(22,24,p));
       group(1-switchHeader,0,-switchHeader*12,()=>{
-        text("给自己",x+65,y+20,18,C.ink,500);text("我的聊天记录",x+65,y+46,11,"#94a183");
+        text("给自己发消息",x+65,y+20,18,C.ink,500);text("我的聊天记录",x+65,y+46,11,"#94a183");
       });
       group(switchHeader,0,(1-switchHeader)*12,()=>{
         text("文件传输助手 / 给自己发消息",x+82,y+28,25,C.green,500);
@@ -1249,17 +1324,93 @@
     }
     return true;
   }
+  function brushGrain(index,salt=0){
+    const value=Math.sin(index*127.1+salt*311.7)*43758.5453;
+    return value-Math.floor(value);
+  }
+  function brushEdge(y,progress,fromRight){
+    const row=y/H;
+    // Fixed bristle lengths make the paint edge travel without frame-to-frame noise.
+    const bristles=Math.sin(y*.037)*12+Math.sin(y*.131+.8)*5+Math.sin(y*.71)*2.1;
+    const sweep=(row-.5)*30+Math.sin(row*Math.PI)*11;
+    const x=-92+(W+184)*progress+bristles+sweep;
+    return fromRight?W-x:x;
+  }
+  function brushMask(progress,fromRight){
+    const side=fromRight?W:0;
+    ctx.beginPath();ctx.moveTo(side,0);ctx.lineTo(brushEdge(0,progress,fromRight),0);
+    for(let y=5;y<H;y+=5)ctx.lineTo(brushEdge(y,progress,fromRight),y);
+    ctx.lineTo(brushEdge(H,progress,fromRight),H);ctx.lineTo(side,H);ctx.closePath();
+    // Thin dry-brush gaps are confined to the advancing edge and get painted in
+    // as it passes; the finished frame is entirely the next scene.
+    if(progress>0&&progress<1){
+      for(let i=0,y=13;y<H;y+=13+brushGrain(i,1)*26,i++){
+        const length=5+brushGrain(i,2)*14;
+        const inset=8+brushGrain(i,3)*12;
+        const edge=brushEdge(y,progress,fromRight);
+        ctx.rect(fromRight?edge+inset:edge-inset-length,y,length,.6+brushGrain(i,4)*.7);
+      }
+    }
+  }
+  function renderBrushTransition(time){
+    const targets=[
+      {draw:sceneBasicSecurity,dark:true},
+      {draw:scenePrivacy,dark:false},
+      {draw:sceneRoadmap,dark:true},
+      {draw:sceneEnd,dark:false}
+    ];
+    const target=targets.find(item=>{
+      const scene=scenes.find(s=>s.draw===item.draw);
+      return time>=scene.start-.28&&time<scene.start+.36;
+    });
+    if(!target)return false;
+    const next=scenes.find(s=>s.draw===target.draw),previous=scenes[scenes.indexOf(next)-1];
+    const start=next.start-.28,progress=clamp((time-start)/.64),fromRight=!target.dark;
+    const savedScene=activeScene,savedLocal=motionLocalTime;
+    const drawAt=(scene)=>{
+      activeScene=scene;motionLocalTime=clamp(time-scene.start,0,scene.end-scene.start);
+      ctx.save();try{scene.draw(sourceTime(scene,motionLocalTime))}finally{ctx.restore()}
+    };
+    ctx.save();
+    try{
+      drawAt(previous);
+      if(progress>0){
+        ctx.save();brushMask(progress,fromRight);ctx.clip("evenodd");drawAt(next);ctx.restore();
+        // A few leading fibres sell the brush contact without a full-screen flash.
+        const direction=fromRight?-1:1,paint=target.dark?C.dark:C.paper;
+        ctx.save();ctx.strokeStyle=paint;ctx.lineCap="round";
+        for(let i=0,y=6;y<H;y+=3+brushGrain(i,5)*4,i++){
+          const edge=brushEdge(y,progress,fromRight),reach=3+brushGrain(i,6)*12;
+          ctx.lineWidth=.5+brushGrain(i,7)*.9;
+          ctx.beginPath();ctx.moveTo(edge-direction*3,y);ctx.lineTo(edge+direction*reach,y);ctx.stroke();
+        }
+        // Low-contrast wet streaks sit immediately behind the edge, then leave
+        // the revealed typography and illustrations completely clean.
+        ctx.globalAlpha=.06;
+        ctx.strokeStyle=target.dark?"#719466":"#ffffff";
+        for(let i=0,y=21;y<H;y+=20+brushGrain(i,8)*40,i++){
+          const edge=brushEdge(y,progress,fromRight),tail=18+brushGrain(i,9)*22;
+          ctx.lineWidth=.6+brushGrain(i,10)*.4;
+          ctx.beginPath();ctx.moveTo(edge-direction*13,y);ctx.lineTo(edge-direction*tail,y);ctx.stroke();
+        }
+        ctx.restore();
+      }
+    }finally{
+      activeScene=savedScene;motionLocalTime=savedLocal;ctx.restore();
+    }
+    return true;
+  }
   function render(time){
-    lastTime=clamp(time,0,114);resize();
+    lastTime=clamp(time,0,108);resize();
     const index=scenes.findIndex(s=>lastTime>=s.start&&lastTime<s.end),i=index<0?scenes.length-1:index,scene=scenes[i];
     activeScene=scene;motionLocalTime=lastTime-scene.start;
     ctx.save();ctx.globalAlpha=1;
-    if(!renderOpeningTransition(lastTime)&&!renderPageChange(lastTime))scene.draw(sourceTime(scene,lastTime-scene.start));
+    if(!renderOpeningTransition(lastTime)&&!renderPageChange(lastTime)&&!renderBrushTransition(lastTime))scene.draw(sourceTime(scene,lastTime-scene.start));
     ctx.restore();
     canvas.dataset.scene=String(i);canvas.dataset.time=lastTime.toFixed(2);
     return scene;
   }
-  window.InboxConceptFilm={duration:114,posterTime:2.1,render,resize,scenes:scenes.map(({draw,...rest})=>rest)};
+  window.InboxConceptFilm={duration:108,posterTime:2.1,render,resize,scenes:scenes.map(({draw,...rest})=>rest)};
   photo.addEventListener("load",()=>render(lastTime));
   if("ResizeObserver" in window)new ResizeObserver(()=>render(lastTime)).observe(screen);
   window.addEventListener("resize",()=>render(lastTime),{passive:true});

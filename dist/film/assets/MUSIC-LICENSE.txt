@@ -15,9 +15,11 @@ Author's usage guidance:
 https://www.scottbuckley.com.au/library/using-this-music/
 
 Changes for this film:
-- Excerpts from 0:00-1:49.6 and 2:58.23-3:04.23 of the original recording.
-- An outro crossfade, fades, volume adjustment, and mixing with original
-  action sound effects, synchronized to this 114-second concept film.
+- The main section uses a continuous excerpt from the start of the original.
+- The closing section uses the original recording's ending, joined with a short
+  crossfade around the final scene transition, without changing playback speed.
+- Opening/ending fades, overall volume adjustment, and mixing with original
+  action sound effects, synchronized to this 108-second concept film.
 - No endorsement by Scott Buckley is implied.
 
 The original full music recording is not included as a standalone song.

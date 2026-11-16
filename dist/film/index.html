@@ -8,9 +8,9 @@
   <title>一个只和自己聊天的 App · 设想展示</title>
   <link rel="icon" href="assets/favicon.svg?v=20" type="image/svg+xml">
   <link rel="stylesheet" href="film.css?v=20">
-  <script src="audio.js?v=20" defer></script>
-  <script src="film.js?v=24" defer></script>
-  <script src="player.js?v=24" defer></script>
+  <script src="audio.js?v=31" defer></script>
+  <script src="film.js?v=32" defer></script>
+  <script src="player.js?v=28" defer></script>
 </head>
 <body>
   <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -24,7 +24,7 @@
   <header class="cinema-header">
     <a class="wordmark" href="./" aria-label="一个只和自己聊天的 App，回到短片开头"><span class="wordmark-title">一个只和自己聊天的 App</span></a>
     <span class="edition">CONCEPT FILM <i></i> 16:9</span>
-    <span class="runtime"><span></span> 01:54</span>
+    <span class="runtime"><span></span> 01:48</span>
   </header>
   <main>
     <section class="cinema" aria-label="项目设想展示短片">
@@ -42,8 +42,8 @@
         <div class="transport" id="transport" aria-label="视频播放控制">
           <button class="icon-button" id="play-pause" type="button" aria-label="播放短片"><svg><use id="play-use" href="#play-icon"/></svg></button>
           <button class="icon-button replay-button" id="restart" type="button" aria-label="从头播放"><svg><use href="#replay-icon"/></svg></button>
-          <span class="timecode" id="timecode">00:00 <span>/ 01:54</span></span>
-          <div class="scrubber"><label class="sr-only" for="seek">播放进度</label><input id="seek" type="range" min="0" max="114" step="0.1" value="0" aria-valuetext="0 分 0 秒，共 1 分 54 秒"></div>
+          <span class="timecode" id="timecode">00:00 <span>/ 01:48</span></span>
+          <div class="scrubber"><label class="sr-only" for="seek">播放进度</label><input id="seek" type="range" min="0" max="108" step="0.1" value="0" aria-valuetext="0 分 0 秒，共 1 分 48 秒"></div>
           <span class="scene-label" id="scene-label">开篇</span>
           <button class="icon-button" id="sound-toggle" type="button" aria-label="静音" aria-pressed="true"><svg><use id="sound-use" href="#sound-icon"/></svg></button>
           <button class="icon-button" id="fullscreen" type="button" aria-label="全屏观看"><svg><use href="#full-icon"/></svg></button>
@@ -60,14 +60,14 @@
         <button type="button" data-seek="23"><small>00:23</small><span>现有方案的不便</span></button>
         <button type="button" data-seek="34"><small>00:34</small><span>想自己做一个</span></button>
         <button type="button" data-seek="40"><small>00:40</small><span>核心理念</span></button>
-        <button type="button" data-seek="47"><small>00:47</small><span>给自己发消息</span></button>
-        <button type="button" data-seek="51"><small>00:51</small><span>从消息到信息</span></button>
-        <button type="button" data-seek="64"><small>01:04</small><span>常用操作</span></button>
-        <button type="button" data-seek="73"><small>01:13</small><span>六平台与自托管</span></button>
-        <button type="button" data-seek="80"><small>01:20</small><span>身份验证与网络安全</span></button>
-        <button type="button" data-seek="91"><small>01:31</small><span>AI 与隐私</span></button>
-        <button type="button" data-seek="95"><small>01:35</small><span>初步技术设想</span></button>
-        <button type="button" data-seek="103"><small>01:43</small><span>开发规划</span></button>
+        <button type="button" data-seek="44.5"><small>00:44</small><span>给自己发消息</span></button>
+        <button type="button" data-seek="47"><small>00:47</small><span>从消息到信息</span></button>
+        <button type="button" data-seek="58"><small>00:58</small><span>常用操作</span></button>
+        <button type="button" data-seek="67"><small>01:07</small><span>六平台与自托管</span></button>
+        <button type="button" data-seek="74"><small>01:14</small><span>身份验证与网络安全</span></button>
+        <button type="button" data-seek="85"><small>01:25</small><span>AI 与隐私</span></button>
+        <button type="button" data-seek="89"><small>01:29</small><span>初步技术设想</span></button>
+        <button type="button" data-seek="97"><small>01:37</small><span>开发规划</span></button>
       </nav>
       <aside class="music-credit" aria-label="音乐署名与许可">
         <p>Music: <a href="https://www.scottbuckley.com.au/library/origami/" target="_blank" rel="noopener noreferrer">Origami</a> by <a href="https://www.scottbuckley.com.au/" target="_blank" rel="noopener noreferrer">Scott Buckley</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>

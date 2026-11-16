@@ -9,8 +9,9 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="styles.css?v=23">
   <link rel="stylesheet" href="reading.css?v=23">
-  <link rel="stylesheet" href="updates.css?v=23">
+  <link rel="stylesheet" href="updates.css?v=35">
   <script src="app.js?v=23" defer></script>
+  <script src="hero-words.js?v=33" defer></script>
 </head>
 <body>
 <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -46,18 +47,18 @@
 <main>
   <section class="hero" id="top" aria-labelledby="hero-title">
     <div class="hero-grid"></div>
+    <canvas class="hero-word-field" aria-hidden="true"></canvas>
     <div class="hero-copy">
       <div class="eyebrow hero-enter"><span class="status-dot"></span> 项目设想 <span class="eyebrow-line"></span> 尚未命名</div>
       <h1 id="hero-title"><span class="title-line"><span>一个只和自己</span></span><span class="title-line"><span>聊天的 App<span class="title-period">。</span></span></span></h1>
       <p class="hero-description hero-enter">一个纯粹而且足够好用的「文件传输助手」。<br>随手记录，长期保存，再让 AI 帮忙整理。</p>
-      <div class="hero-links hero-enter"><a class="film-jump" href="#film"><svg><use href="#i-film"/></svg><span>观看设想短片</span></a><a class="read-link" href="#inspiration"><span>继续阅读设想</span><span class="round-arrow"><svg><use href="#i-down"/></svg></span></a></div>
     </div>
     <div class="hero-stage" aria-label="给自己发消息的概念界面">
       <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-dot"></div>
       <span class="hero-annotation annotation-one">想到什么，直接发条消息。</span>
       <div class="hero-window">
         <div class="window-bar"><span class="window-dots"><i></i><i></i><i></i></span><span>给自己发消息</span><span class="mini-symbol">↗</span></div>
-        <div class="hero-chat-header"><span class="avatar"><svg><use href="#i-message"/></svg></span><div><strong>给自己</strong><small>只有自己的聊天</small></div><svg class="icon"><use href="#i-search"/></svg></div>
+        <div class="hero-chat-header"><span class="avatar"><svg><use href="#i-message"/></svg></span><div><strong>给自己发消息</strong></div><svg class="icon"><use href="#i-search"/></svg></div>
         <div class="hero-messages"><span class="chat-date">今天</span>
           <div class="h-message hm-one">想看《布达佩斯大饭店》</div>
           <div class="h-message hm-two">明早给老师发邮件</div>
@@ -77,9 +78,9 @@
   <section class="film-section section-pad" id="film" aria-labelledby="film-title">
     <h2 id="film-title" class="sr-only">项目设想短片</h2>
     <div class="film-frame" data-reveal><div class="film-frame-inner">
-      <iframe id="concept-film" src="film/embed.html?v=24" title="一个只和自己聊天的 App · 设想展示短片" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      <iframe id="concept-film" src="film/embed.html?v=32" title="一个只和自己聊天的 App · 设想展示短片" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
     </div></div>
-    <div class="film-meta"><p>概念示意，相关功能尚待开发。</p><a href="film/index.html" target="_blank" rel="noopener">单独观看 <span aria-hidden="true">↗</span></a></div>
+    <div class="film-meta"><div class="film-meta-copy"><p class="film-render-note">前端实时渲染 · 无视频流量</p><p>概念示意，相关功能尚待开发。</p></div><a href="film/index.html" target="_blank" rel="noopener">单独观看 <span aria-hidden="true">↗</span></a></div>
     <p class="film-credit">配乐：<a href="https://www.scottbuckley.com.au/library/origami/" target="_blank" rel="noopener">Origami — Scott Buckley</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a><span>为本片节选，并与动作音效混音。</span></p>
   </section>
 

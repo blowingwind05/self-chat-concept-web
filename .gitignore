@@ -1,0 +1,7 @@
+.openai/
+.env
+.env.*
+!.env.example
+.sound-build/
+__pycache__/
+*.py[cod]

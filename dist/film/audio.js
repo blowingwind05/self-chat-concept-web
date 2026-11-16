@@ -1,11 +1,11 @@
 /* One pre-mixed stereo soundtrack. The media clock also drives the picture. */
 (() => {
   "use strict";
-  const TRACK_SOURCE = "assets/film-soundtrack.mp3?v=20";
+  const TRACK_SOURCE = "assets/film-soundtrack.mp3?v=31";
 
   class InboxFilmSound {
-    constructor({ duration = 114, source = TRACK_SOURCE } = {}) {
-      this.duration = Number.isFinite(duration) && duration > 0 ? duration : 114;
+    constructor({ duration = 108, source = TRACK_SOURCE } = {}) {
+      this.duration = Number.isFinite(duration) && duration > 0 ? duration : 108;
       this.muted = false;
       this.failed = false;
       this.onError = null;

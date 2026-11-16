@@ -22,7 +22,7 @@
   const notice = $("screen-notice");
   const chapterButtons = [...document.querySelectorAll("[data-seek]")];
   const initialFilm = window.InboxConceptFilm;
-  const duration = Number.isFinite(initialFilm?.duration) ? initialFilm.duration : 114;
+  const duration = Number.isFinite(initialFilm?.duration) ? initialFilm.duration : 108;
   const sound = typeof window.InboxFilmSound === "function"
     ? new window.InboxFilmSound({ duration }) : null;
   let currentTime = 0;
