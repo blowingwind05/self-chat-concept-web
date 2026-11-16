@@ -1,0 +1,6 @@
+/* The parent reserves a 16:9 picture plus a 64px transport. */
+html,body.is-embedded{margin:0;padding:0;width:100%;background:#fff;overflow:hidden}
+.is-embedded .player{width:100%;margin:0;border:0;border-radius:0;box-shadow:none}
+.is-embedded .player:not(:fullscreen) .film-screen{width:100%;aspect-ratio:16/9}
+.is-embedded .player:not(:fullscreen) .transport{height:64px;min-height:64px}
+.is-embedded .player:fullscreen{width:100vw;height:100dvh}
