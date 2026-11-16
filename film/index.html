@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f5f5f5">
+  <meta name="description" content="一个只和自己聊天的 App · 项目构想短片。沿着原案展示记录习惯、核心理念、安全隐私、技术设想与开发规划。">
+  <title>一个只和自己聊天的 App · 设想展示</title>
+  <link rel="icon" href="assets/favicon.svg?v=20" type="image/svg+xml">
+  <link rel="stylesheet" href="film.css?v=20">
+  <script src="audio.js?v=31" defer></script>
+  <script src="film.js?v=32" defer></script>
+  <script src="player.js?v=28" defer></script>
+</head>
+<body>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="play-icon" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+    <symbol id="pause-icon" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="replay-icon" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+    <symbol id="sound-icon" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="mute-icon" viewBox="0 0 24 24"><path d="m11 4-6 5H2v6h3l6 5ZM16 9l6 6m0-6-6 6"/></symbol>
+    <symbol id="full-icon" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+  </defs></svg>
+  <header class="cinema-header">
+    <a class="wordmark" href="./" aria-label="一个只和自己聊天的 App，回到短片开头"><span class="wordmark-title">一个只和自己聊天的 App</span></a>
+    <span class="edition">CONCEPT FILM <i></i> 16:9</span>
+    <span class="runtime"><span></span> 01:48</span>
+  </header>
+  <main>
+    <section class="cinema" aria-label="项目设想展示短片">
+      <div class="player" id="player" data-state="poster">
+        <div class="film-screen" id="film-screen">
+          <canvas id="film-canvas" width="1600" height="900" role="img" aria-label="项目设想动画：一个只和自己聊天的 App"></canvas>
+          <div class="start-gate" id="start-gate">
+            <button class="start-button" id="start-sound" type="button"><svg><use href="#play-icon"/></svg><span>播放短片<small>立体声</small></span></button>
+            <button class="silent-start" id="start-silent" type="button">静音观看</button>
+          </div>
+          <div class="end-gate" id="end-gate" hidden><button class="start-button" id="end-replay" type="button"><svg><use href="#replay-icon"/></svg> 再看一遍</button></div>
+          <div class="screen-notice" id="screen-notice" role="status" hidden></div>
+          <span class="film-signature" aria-hidden="true">项目设想 · 相关功能尚待开发</span>
+        </div>
+        <div class="transport" id="transport" aria-label="视频播放控制">
+          <button class="icon-button" id="play-pause" type="button" aria-label="播放短片"><svg><use id="play-use" href="#play-icon"/></svg></button>
+          <button class="icon-button replay-button" id="restart" type="button" aria-label="从头播放"><svg><use href="#replay-icon"/></svg></button>
+          <span class="timecode" id="timecode">00:00 <span>/ 01:48</span></span>
+          <div class="scrubber"><label class="sr-only" for="seek">播放进度</label><input id="seek" type="range" min="0" max="108" step="0.1" value="0" aria-valuetext="0 分 0 秒，共 1 分 48 秒"></div>
+          <span class="scene-label" id="scene-label">开篇</span>
+          <button class="icon-button" id="sound-toggle" type="button" aria-label="静音" aria-pressed="true"><svg><use id="sound-use" href="#sound-icon"/></svg></button>
+          <button class="icon-button" id="fullscreen" type="button" aria-label="全屏观看"><svg><use href="#full-icon"/></svg></button>
+        </div>
+      </div>
+      <div class="below-film">
+        <p><span class="live-dot"></span> 项目构想 · 概念示意，相关功能尚待开发</p>
+        <span id="playback-hint">点击播放，画面将自动展开</span>
+      </div>
+      <nav class="chapters" aria-label="短片章节">
+        <button type="button" data-seek="0"><small>00:00</small><span>开篇</span></button>
+        <button type="button" data-seek="3"><small>00:03</small><span>我和文件传输助手</span></button>
+        <button type="button" data-seek="14"><small>00:14</small><span>零碎的生活记录</span></button>
+        <button type="button" data-seek="23"><small>00:23</small><span>现有方案的不便</span></button>
+        <button type="button" data-seek="34"><small>00:34</small><span>想自己做一个</span></button>
+        <button type="button" data-seek="40"><small>00:40</small><span>核心理念</span></button>
+        <button type="button" data-seek="44.5"><small>00:44</small><span>给自己发消息</span></button>
+        <button type="button" data-seek="47"><small>00:47</small><span>从消息到信息</span></button>
+        <button type="button" data-seek="58"><small>00:58</small><span>常用操作</span></button>
+        <button type="button" data-seek="67"><small>01:07</small><span>六平台与自托管</span></button>
+        <button type="button" data-seek="74"><small>01:14</small><span>身份验证与网络安全</span></button>
+        <button type="button" data-seek="85"><small>01:25</small><span>AI 与隐私</span></button>
+        <button type="button" data-seek="89"><small>01:29</small><span>初步技术设想</span></button>
+        <button type="button" data-seek="97"><small>01:37</small><span>开发规划</span></button>
+      </nav>
+      <aside class="music-credit" aria-label="音乐署名与许可">
+        <p>Music: <a href="https://www.scottbuckley.com.au/library/origami/" target="_blank" rel="noopener noreferrer">Origami</a> by <a href="https://www.scottbuckley.com.au/" target="_blank" rel="noopener noreferrer">Scott Buckley</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></p>
+        <small>为本片节选、淡入淡出并与动作音效混音。</small>
+      </aside>
+    </section>
+    <p class="sr-only" id="scene-description" aria-live="polite">一个只和自己聊天的 App。一个纯粹而且足够好用的文件传输助手。项目构想展示。</p>
+    <details class="transcript">
+      <summary>短片文字稿 <span>阅读原案叙事</span></summary>
+      <div>
+        <p>我现在经常使用微信的文件传输助手，或者直接给自己的 QQ 账号发消息。灵感、学习工作中的记录、文案和稿件、喜欢的作品，都会顺手发进去。想到什么直接发条消息，总比新建文档、考虑怎么分类方便得多。</p>
+        <p>但是我经常需要在 Mac、Windows 和 Linux 之间传文件，我用微信、QQ 时，同一账号只能同时登录一台电脑，只能来回切换。微信里的记录要自己保留、备份和迁移；QQ 的云端漫游也有期限和内容范围。即使是飞书，免费版也只能查看最近 18 个月的记录。我也希望所有消息和文件都能长期保存在云端，换了设备还能找回完整的历史记录。消息多了难免杂乱，正好可以交给 AI 帮忙整理。</p>
+        <p>多种用途，一个聊天入口。不需要提前分类，直接发送。灵感创意、学习工作、文案与稿件、审美积累、书影音清单、生活回顾、待办与日程、网页收藏、文件传输，都先作为普通消息进入同一条时间线。</p>
+        <p>原案例子：想看《布达佩斯大饭店》；明早给老师发邮件；各位老师好，我今天汇报的题目是……首先介绍一下课题的研究背景……；讲稿_v3.pdf；黑白建筑摄影；想补《冰菓》；serendipity，偶然发现美好事物的机缘；今天终于把实验跑通了；project-files.zip。</p>
+        <p>云端负责长期保存消息与附件，AI 负责理解和整理。整理结果单独保存，可以修改、纠正或重新生成，不影响原始消息。整理后的内容包括书单影单番单、待办与提醒、审美素材库、学习与笔记、生活回顾和智能检索。</p>
+        <p>计划支持六平台客户端和多设备同时登录，初期支持自托管部署。五个开发阶段分别是基础消息系统与自托管、AI 整理与归纳、六平台客户端与个人信息管理、长期可靠性与安全体系研究、公开测试与官方托管。阶段顺序不代表重要性的排序；基础安全从第一阶段开始。</p>
+        <p>初期应考虑安全身份认证、HTTPS 传输加密、数据访问控制、设备与会话管理、备份恢复和基本限流与防护。第一版应具备与实际使用范围相匹配的基本安全措施，但不将早期自托管版本描述为经过全面安全审计的成熟产品。</p>
+        <p>AI 整理需要读取消息、文档和图片，因此数据存储与模型处理应在架构上区分。初期考虑可配置模型 API，未来也可以支持自托管模型。用户应知道哪些数据送往外部服务，并控制处理范围。端到端加密、服务端搜索、AI 整理与账号恢复之间的关系仍需研究。现阶段不提前承诺端到端加密或零知识存储，也不将 HTTPS 等同于服务器无法读取内容。</p>
+        <p>后续研究包括多因素身份验证、多设备信任机制、数据加密与密钥管理、账号与数据恢复、安全测试与漏洞审查、多用户隔离与滥用防护。具体安全模型尚未确定，需在公开测试或官方托管前完成相应验证。</p>
+        <p>技术栈尚未完全确定。初步考虑 Go、PostgreSQL、SQLite、本地或 S3 兼容文件存储、HTTP API 与增量同步，按需加入 WebSocket；优先支持 Docker Compose。消息和附件先可靠保存，再由独立任务进行 AI 处理。只有服务端持久化确认后，才标记为已保存到云端；附件也需要完整性校验。</p>
+        <p>最后想做成的样子，是一个真正能长期用下去的文件传输助手。目前仍处于项目构想阶段，具体功能、技术方案与开发顺序都有调整空间。标题是在说明这个想法是什么，项目尚未命名。</p>
+        <p>现有方案资料来源：<a href="https://oper.my-qcloud.com/cgi-bin/readtemplate?lang=zh_CN&amp;s=privacy&amp;t=weixin_agreement" target="_blank" rel="noopener noreferrer">微信隐私保护指引</a>、<a href="https://vip.qq.com/freedom/freedom_chatmsg.html" target="_blank" rel="noopener noreferrer">QQ 云消息服务说明</a>、<a href="https://www.feishu.cn/hc/zh-CN/articles/518067879872" target="_blank" rel="noopener noreferrer">飞书个人账号权益说明</a>、<a href="https://www.feishu.cn/hc/en-US/articles/255316448091" target="_blank" rel="noopener noreferrer">飞书免费版聊天记录规则</a>（2026-11-16 核对；18 个月指可搜索和查看的历史范围）。</p>
+      </div>
+    </details>
+  </main>
+  <footer class="cinema-footer"><span>想到什么，就直接发给自己。</span><span>CONCEPT FILM / 01</span></footer>
+  <noscript><p class="noscript">此短片需要 JavaScript 播放。你仍然可以展开上方文字稿阅读完整内容。</p></noscript>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f5">
+  <meta name="description" content="一个只和自己聊天的 App。以给自己发消息为统一入口，云端长期保存，再由 AI 整理和归纳。项目构想展示。">
+  <title>一个只和自己聊天的 App · 项目构想</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="reading.css?v=23">
+  <link rel="stylesheet" href="updates.css?v=35">
+  <script src="app.js?v=23" defer></script>
+  <script src="hero-words.js?v=33" defer></script>
+</head>
+<body>
+<svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M20 11.5a8 8 0 0 1-8.5 8H8l-5 2 1.5-5A8.5 8.5 0 1 1 20 11.5Z"/><path d="M8 9h7M8 13h4"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v16m-6-6 6 6 6-6"/></symbol>
+  <symbol id="i-light" viewBox="0 0 24 24"><path d="M9 18h6m-5 4h4m-4-4a6 6 0 0 0-2-4 6 6 0 1 1 8 0 6 6 0 0 0-2 4M12 1V0M3 5 1 3m20 2 2-2"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 6v15M3 4c3-1 6 0 9 2 3-2 6-3 9-2v15c-3-1-6 0-9 2-3-2-6-3-9-2Z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9Zm0 0v6h6M8 13h8m-8 4h5"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 18 6-6 4 4 3-3 5 5"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4M17 8h4m-4 8h4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="m3 6 2 2 3-4m3 2h10M3 13h4m4 0h10M3 20h4m4 0h10"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="m10 14 4-4m-6 6-1 1a4 4 0 0 1-6-6l4-4a4 4 0 0 1 6 0m2 10a4 4 0 0 0 6 0l4-4a4 4 0 0 0-6-6l-1 1"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm0 2h18"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M6 18a4.5 4.5 0 0 1-.5-9 6.5 6.5 0 0 1 12.5-1A5 5 0 0 1 18 18Z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5ZM20 2v4m-2-2h4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></symbol>
+  <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 11a9 9 0 1 1 2 7M3 4v7h7m2-4v6l4 2"/></symbol>
+  <symbol id="i-devices" viewBox="0 0 24 24"><rect x="2" y="3" width="15" height="13" rx="2"/><path d="M6 21h7m-3-5v5"/><rect x="18" y="9" width="4" height="12" rx="1"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="8" rx="2"/><rect x="3" y="13" width="18" height="8" rx="2"/><path d="M7 7h.01M7 17h.01M11 7h6m-6 10h6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 2 8 3v7c0 6-8 10-8 10S4 18 4 12V5Zm-4 10 3 3 5-6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4m-4 4v3"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5M3 12a9 3 0 0 0 18 0"/></symbol>
+</defs></svg>
+<a class="skip-link" href="#inspiration">跳到正文</a>
+<div class="page-progress" aria-hidden="true"><span id="page-progress"></span></div>
+<header class="site-header">
+  <a class="brand" href="#top" aria-label="返回开头"><span class="brand-mark"><svg><use href="#i-message"/></svg></span><span class="brand-title">一个只和自己聊天的 App</span></a>
+  <nav aria-label="章节导航"><a href="#film">短片</a><a href="#inspiration">灵感来源</a><a href="#core">核心理念</a><a href="#features">功能</a><a href="#roadmap">规划</a></nav>
+  <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="false" aria-label="切换页面动画"><span class="motion-icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="motion-label">动态 开</span></button>
+</header>
+<main>
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="hero-grid"></div>
+    <canvas class="hero-word-field" aria-hidden="true"></canvas>
+    <div class="hero-copy">
+      <div class="eyebrow hero-enter"><span class="status-dot"></span> 项目设想 <span class="eyebrow-line"></span> 尚未命名</div>
+      <h1 id="hero-title"><span class="title-line"><span>一个只和自己</span></span><span class="title-line"><span>聊天的 App<span class="title-period">。</span></span></span></h1>
+      <p class="hero-description hero-enter">一个纯粹而且足够好用的「文件传输助手」。<br>随手记录，长期保存，再让 AI 帮忙整理。</p>
+    </div>
+    <div class="hero-stage" aria-label="给自己发消息的概念界面">
+      <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orbit-dot"></div>
+      <span class="hero-annotation annotation-one">想到什么，直接发条消息。</span>
+      <div class="hero-window">
+        <div class="window-bar"><span class="window-dots"><i></i><i></i><i></i></span><span>给自己发消息</span><span class="mini-symbol">↗</span></div>
+        <div class="hero-chat-header"><span class="avatar"><svg><use href="#i-message"/></svg></span><div><strong>给自己发消息</strong></div><svg class="icon"><use href="#i-search"/></svg></div>
+        <div class="hero-messages"><span class="chat-date">今天</span>
+          <div class="h-message hm-one">想看《布达佩斯大饭店》</div>
+          <div class="h-message hm-two">明早给老师发邮件</div>
+          <div class="h-message h-photo hm-three"><img src="assets/reference-architecture.png" alt="原案中的黑白建筑摄影：楼梯与强烈光影" width="338" height="338"></div>
+          <div class="h-message hm-four">今天终于把实验跑通了</div>
+          <span class="hero-saved"><svg><use href="#i-check"/></svg> 原始记录，留在同一条时间线</span>
+        </div>
+        <div class="hero-composer" aria-hidden="true"><span>给自己发消息…</span><span>↑</span></div>
+      </div>
+      <div class="floating-note float-file"><span class="file-icon"><svg><use href="#i-file"/></svg></span><div><strong>讲稿_v3.pdf</strong><small>PDF · 1.8 MB</small></div><span class="tiny-arrow">↗</span></div>
+      <div class="floating-note float-word"><small>随手记下的单词</small><strong>serendipity</strong><span>偶然发现美好事物的机缘</span></div>
+      <span class="hero-annotation annotation-two">文字 / 图片 / 文件 / 链接</span>
+    </div>
+    <div class="hero-bottom"><span>一个聊天入口，装下零零碎碎的记录。</span><span>SCROLL TO EXPLORE <svg><use href="#i-down"/></svg></span></div>
+  </section>
+
+  <section class="film-section section-pad" id="film" aria-labelledby="film-title">
+    <h2 id="film-title" class="sr-only">项目设想短片</h2>
+    <div class="film-frame" data-reveal><div class="film-frame-inner">
+      <iframe id="concept-film" src="film/embed.html?v=32" title="一个只和自己聊天的 App · 设想展示短片" loading="lazy" allow="autoplay; fullscreen" allowfullscreen></iframe>
+    </div></div>
+    <div class="film-meta"><div class="film-meta-copy"><p class="film-render-note">前端实时渲染 · 无视频流量</p><p>概念示意，相关功能尚待开发。</p></div><a href="film/index.html" target="_blank" rel="noopener">单独观看 <span aria-hidden="true">↗</span></a></div>
+    <p class="film-credit">配乐：<a href="https://www.scottbuckley.com.au/library/origami/" target="_blank" rel="noopener">Origami — Scott Buckley</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a><span>为本片节选，并与动作音效混音。</span></p>
+  </section>
+
+  <section class="inspiration section-pad" id="inspiration">
+    <div class="section-topline" data-reveal><span class="chapter">01 / 灵感来源</span><span class="marginal">从一个已经存在的习惯开始</span></div>
+    <div class="origin-grid">
+      <div class="origin-heading" data-reveal><h2>不知道你有没有<br><span class="green-text">这样的习惯。</span></h2><div class="origin-line"></div><span class="small-index">A NOTE TO MYSELF</span></div>
+      <div class="origin-body">
+        <p data-reveal>我现在经常使用微信的文件传输助手，或者直接给自己的 QQ 账号发消息。除了在不同设备之间传递文字和文件，我还会把突然想到的灵感、学习工作中的记录、生活中需要记住的事情发进去，有时候直接当成备忘录、日程提醒或者 To-do List 来用。偶尔也会在里面写文案、写和看面试或 Presentation 的稿子，甚至顺手记下不认识的单词（当然，记单词不推荐长期这样）。</p>
+        <p data-reveal>平时看到别人有意思的创意，或者好看的摄影、绘画、设计作品，我也会顺手发进去，积攒审美，方便以后学习模仿。想看的书、电影和想补的番也会记下来，免得之后忘了。这些零零碎碎的消息还能让我在不写日记的情况下，回顾过去的日子每天都干了什么，有没有虚度光阴。</p>
+        <p data-reveal>而且到了大四，要记住的事情越来越多，记忆力却反而下降了。面对自己的「少年痴呆症」，实在有些力不从心，也就更加依赖这种外置的记录。再说我本来就比较懒——</p>
+        <blockquote data-reveal>想到什么直接发条消息，总比打开笔记软件、新建文档、考虑怎么分类方便得多。</blockquote>
+        <p data-reveal>但是我经常需要在 Mac、Windows 和 Linux 之间传文件。我用微信、QQ 时，同一账号只能同时登录一台电脑，只能来回切换。</p>
+        <p data-reveal>记录的留存也不够省心。微信里的记录需要自己保留、备份和迁移；QQ 的云端漫游也有期限和内容范围。我希望所有消息和文件都能长期保存在云端，换了设备也能找回完整的历史记录。消息多了难免杂乱，正好可以交给 AI 帮忙整理。</p>
+        <details class="retention-sources" data-reveal><summary>记录留存的补充说明</summary><p>即使是飞书，免费版也只能查看最近 18 个月的聊天记录。这只是一个例子，我想要的是能长期留下自己的消息和文件。</p><p>资料来源：<a href="https://oper.my-qcloud.com/cgi-bin/readtemplate?lang=zh_CN&amp;s=privacy&amp;t=weixin_agreement" target="_blank" rel="noopener">微信隐私保护指引</a>、<a href="https://vip.qq.com/freedom/freedom_chatmsg.html" target="_blank" rel="noopener">QQ 云消息服务说明</a>、<a href="https://www.feishu.cn/hc/en-US/articles/255316448091" target="_blank" rel="noopener">飞书聊天记录规则</a>（2026-11-16 核对）。</p></details>
+        <p class="origin-ending" data-reveal>既然现有软件不能完全满足这些需求，<br><strong>干脆自己做一个好了。</strong><span class="hand-arrow" aria-hidden="true">↘</span></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="core-intro section-pad" id="core">
+    <div class="section-topline" data-reveal><span class="chapter">02 / 核心理念</span><span class="marginal">纯粹的是使用方式，而不是用途</span></div>
+    <div class="core-intro-grid"><h2 data-reveal>多种用途，<br>一个聊天入口<span class="green-text">。</span></h2><p data-reveal>以给自己发消息为统一入口，随手记录文字、图片、文件和各种信息，通过云端长期保存，再利用 AI 自动整理和归纳。</p></div>
+  </section>
+  <section class="core-scroll" id="core-section" data-stage="0" aria-label="核心理念的滚动展示">
+    <div class="core-sticky" id="core-stage">
+      <aside class="core-sidebar">
+        <span class="mono-label">THE IDEA, UNFOLDED</span>
+        <div class="core-step-number" aria-hidden="true"><span id="core-step-number">01</span><small>/ 04</small></div>
+        <h3 id="core-phase-title">多种用途</h3>
+        <p id="core-phase-description">灵感、稿件、收藏、待办……<br>零零碎碎的信息，都有地方放。</p>
+        <ol class="core-steps" aria-label="理念展示步骤"><li class="is-active">随手记录</li><li>同一个入口</li><li>保存与整理</li><li>按需使用</li></ol>
+        <span class="core-scroll-hint"><span class="scroll-pip"></span> 随滚动展开</span>
+      </aside>
+      <div class="core-canvas">
+        <div class="core-canvas-grid" aria-hidden="true"></div>
+        <div class="core-purpose core-scene" data-core-scene="0">
+          <span class="scene-label">日常信息，不止一种</span>
+          <div class="purpose-grid">
+            <div class="purpose-item" style="--item:0"><svg><use href="#i-light"/></svg><span>灵感创意</span></div>
+            <div class="purpose-item" style="--item:1"><svg><use href="#i-book"/></svg><span>学习工作</span></div>
+            <div class="purpose-item" style="--item:2"><svg><use href="#i-file"/></svg><span>文案与稿件</span></div>
+            <div class="purpose-item" style="--item:3"><svg><use href="#i-image"/></svg><span>审美积累</span></div>
+            <div class="purpose-item" style="--item:4"><svg><use href="#i-film"/></svg><span>书影音清单</span></div>
+            <div class="purpose-item" style="--item:5"><svg><use href="#i-history"/></svg><span>生活回顾</span></div>
+            <div class="purpose-item" style="--item:6"><svg><use href="#i-list"/></svg><span>待办与日程</span></div>
+            <div class="purpose-item" style="--item:7"><svg><use href="#i-link"/></svg><span>网页收藏</span></div>
+            <div class="purpose-item" style="--item:8"><svg><use href="#i-folder"/></svg><span>文件传输</span></div>
+          </div>
+          <p class="scene-caption">不需要提前分类，直接发送 <svg><use href="#i-down"/></svg></p>
+        </div>
+        <div class="core-chat core-scene" data-core-scene="1">
+          <div class="core-chat-head"><span class="avatar"><svg><use href="#i-message"/></svg></span><div><strong>给自己发消息</strong><small>我的聊天记录</small></div><span class="concept-badge">概念示意</span></div>
+          <div class="core-chat-messages">
+            <div class="core-message" style="--item:0">想看《布达佩斯大饭店》</div>
+            <div class="core-message" style="--item:1">明早给老师发邮件</div>
+            <div class="core-message msg-script" style="--item:2">各位老师好，我今天汇报的题目是……<br>首先介绍一下课题的研究背景……</div>
+            <div class="core-message msg-file" style="--item:3"><svg><use href="#i-file"/></svg><span><strong>讲稿_v3.pdf</strong><small>PDF · 1.8 MB</small></span></div>
+            <div class="core-message msg-image" style="--item:4"><img src="assets/reference-architecture.png" alt="黑白建筑摄影素材，来自原案" width="338" height="338" loading="lazy"></div>
+            <div class="core-message" style="--item:5">想补《冰菓》</div>
+            <div class="core-message msg-word" style="--item:6"><strong>serendipity</strong> 偶然发现美好事物的机缘</div>
+            <div class="core-message" style="--item:7">今天终于把实验跑通了</div>
+            <div class="core-message msg-file" style="--item:8"><svg><use href="#i-folder"/></svg><span><strong>project-files.zip</strong><small>128 MB</small></span></div>
+          </div>
+          <div class="core-chat-bottom"><span>给自己发消息…</span><span>↑</span></div>
+        </div>
+        <div class="core-process core-scene" data-core-scene="2">
+          <div class="original-record"><svg><use href="#i-message"/></svg><span>原始消息与附件</span><small>完整保存</small></div>
+          <div class="flow-fork" aria-hidden="true"><span></span><span></span><i></i><i></i></div>
+          <div class="process-pair">
+            <article class="process-node cloud-node"><span class="node-icon"><svg><use href="#i-cloud"/></svg></span><span class="node-code">01 / STORE</span><h4>云端长期存储</h4><p>消息与附件<br>完整历史漫游<br>备份和恢复</p><span class="node-baseline"></span></article>
+            <article class="process-node ai-node"><span class="node-icon"><svg><use href="#i-spark"/></svg></span><span class="node-code">02 / ORGANIZE</span><h4>AI 整理与归纳</h4><p>自动分类 · 信息提取<br>关联整理<br>语义检索</p><span class="node-baseline"></span></article>
+          </div>
+          <p class="scene-caption">原始内容完整保存，AI 负责理解和整理</p>
+        </div>
+        <div class="core-results core-scene" data-core-scene="3">
+          <span class="scene-label"><svg><use href="#i-folder"/></svg> 整理后的个人信息</span>
+          <div class="result-grid">
+            <article class="result-item result-watch" style="--item:0" aria-labelledby="result-watch-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-film"/></svg><h4 id="result-watch-title">书单影单番单</h4></header>
+              <ul class="result-entries"><li><span>布达佩斯大饭店</span><small>电影 · 想看</small></li><li><span>冰菓</span><small>番剧 · 想补</small></li></ul>
+            </article>
+            <article class="result-item result-reminder" style="--item:1" aria-labelledby="result-reminder-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-list"/></svg><h4 id="result-reminder-title">待办与提醒</h4></header>
+              <div class="result-task"><span class="result-checkbox" aria-hidden="true"></span><div><p>给老师发邮件</p><span class="result-time">明早</span></div></div>
+            </article>
+            <article class="result-item result-aesthetic" style="--item:2" aria-labelledby="result-aesthetic-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-image"/></svg><h4 id="result-aesthetic-title">审美素材库</h4></header>
+              <div class="result-photo"><img src="assets/reference-architecture.png" alt="此前保存的黑白楼梯摄影" width="80" height="65" loading="lazy"><div><p>黑白建筑摄影</p><span>建筑</span><span>构图</span></div></div>
+            </article>
+            <article class="result-item result-notes" style="--item:3" aria-labelledby="result-notes-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-book"/></svg><h4 id="result-notes-title">学习与笔记</h4></header>
+              <div class="result-word"><p lang="en">serendipity</p><span>偶然发现美好事物的机缘</span></div>
+              <div class="result-file"><svg aria-hidden="true"><use href="#i-file"/></svg><span>讲稿_v3.pdf</span></div>
+            </article>
+            <article class="result-item result-memory" style="--item:4" aria-labelledby="result-memory-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-history"/></svg><h4 id="result-memory-title">生活回顾</h4></header>
+              <blockquote><span aria-hidden="true">“</span><p>今天终于把实验跑通了</p></blockquote>
+            </article>
+            <article class="result-item result-search" style="--item:5" aria-labelledby="result-search-title">
+              <header class="result-head"><svg aria-hidden="true"><use href="#i-search"/></svg><h4 id="result-search-title">智能检索</h4></header>
+              <div class="result-query"><svg aria-hidden="true"><use href="#i-search"/></svg><span>之前存的楼梯照片</span></div>
+              <div class="result-found"><img src="assets/reference-architecture.png" alt="匹配到的同一张楼梯摄影" width="34" height="28" loading="lazy"><span>黑白建筑摄影</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></div>
+            </article>
+          </div>
+          <p class="scene-caption">按需组织成各种可以使用的信息</p>
+        </div>
+        <div class="core-canvas-footer"><span>同一条时间线 · 不同的信息视图</span><span class="scene-counter" aria-hidden="true">CONCEPT / 0<span id="scene-counter">1</span></span></div>
+      </div>
+    </div>
+  </section>
+  <section class="core-after section-pad">
+    <div class="core-statement" data-reveal><span class="statement-mark">“</span><h3>纯粹的是使用方式，<br>而不是用途。</h3><p>无论后续增加多少功能，最基本的操作始终是给自己发条消息。</p></div>
+    <div class="core-explanation" data-reveal><p>所有信息首先作为普通消息进入同一条时间线，不需要提前判断它属于哪个分类。</p><p>云端负责保存原始记录，AI 在此基础上进行整理，形成待办清单、书单、影单、素材收藏、学习笔记等不同视图。<strong>整理结果可以修改、纠正或重新生成，不影响原始消息。</strong></p><span class="concept-note">上方为概念示意。消息均为虚构示例，整理结果与相关功能尚待开发。</span></div>
+  </section>
+
+  <section class="features section-pad" id="features">
+    <div class="section-topline" data-reveal><span class="chapter">03 / 核心功能</span><span class="marginal">从日常最常用的操作做起</span></div>
+    <div class="section-heading" data-reveal><h2>计划中的<span class="green-text">核心功能。</span></h2></div>
+    <div class="feature-list">
+      <article class="feature-row" data-reveal><span class="feature-num">01</span><div class="feature-title"><svg><use href="#i-message"/></svg><h3>消息与文件传输</h3></div><p>支持文字、图片、截图、链接及各类文件。重点完善截图粘贴、文件拖放、上传进度、文件预览、复制粘贴和消息搜索等常用操作。文案、面试稿、Presentation 稿件和代码片段，也希望能方便地编辑、阅读和跨设备使用。</p></article>
+      <article class="feature-row" data-reveal><span class="feature-num">02</span><div class="feature-title"><svg><use href="#i-cloud"/></svg><h3>云端长期存储<br>与完整消息漫游</h3></div><p>消息和附件以云端为长期存储中心。新设备登录后可以找回全部历史内容，不依赖旧设备在线。数据完整性优先于毫秒级即时同步，支持离线缓存、历史检索、备份恢复和完整数据导出。</p></article>
+      <article class="feature-row" data-reveal><span class="feature-num">03</span><div class="feature-title"><svg><use href="#i-spark"/></svg><h3>AI 信息整理<br>与智能检索</h3></div><p>自动识别消息中的待办、日程、书籍、影视作品、学习资料和其他信息，对文件、图片、网页及文字进行分类、摘要和关联。即使忘记当初的具体措辞，也能用自然语言找回过去保存的内容。</p></article>
+      <article class="feature-row" data-reveal><span class="feature-num">04</span><div class="feature-title"><svg><use href="#i-devices"/></svg><h3>六平台客户端<br>与多设备同时登录</h3></div><div><p>计划覆盖 Windows、macOS、Linux、Android、iOS 和 Web，使用同一账号体系。多台设备可以同时在线，不需要反复切换登录状态。尤其重视桌面端的输入、文件操作、系统集成和 UI 渲染质量。</p><div class="platforms" aria-label="计划支持的平台"><span>Windows</span><span>macOS</span><span>Linux</span><span>Android</span><span>iOS</span><span>Web</span></div></div></article>
+      <article class="feature-row" data-reveal><span class="feature-num">05</span><div class="feature-title"><svg><use href="#i-server"/></svg><h3>自托管部署</h3></div><p>初期计划支持将服务端部署在自己的公网服务器、VPS 或 NAS 上，自行管理消息、附件及备份。未来根据使用情况，再考虑提供免部署的官方托管服务。</p></article>
+    </div>
+    <div class="examples-block">
+      <div class="examples-heading" data-reveal><span class="mono-label">FROM MESSAGES TO INFORMATION</span><h3>AI 整理的几种典型用法</h3><p>把随手发送的普通消息，转化为更方便使用的信息。</p></div>
+      <div class="example-grid">
+        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-film"/></svg><h4>书影音清单</h4><span>01</span></div><span class="example-label">原始消息</span><p class="example-message">想看《<mark>布达佩斯大饭店</mark>》</p><div class="example-flow" aria-hidden="true"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><svg><use href="#i-film"/></svg><div><strong>布达佩斯大饭店</strong><span>电影 · 想看</span></div><span class="extract-label">AI 提取</span></div></article>
+        <article class="example-card" data-reveal><div class="example-top"><svg><use href="#i-list"/></svg><h4>待办事项</h4><span>02</span></div><span class="example-label">原始消息</span><p class="example-message"><mark>明早</mark><mark>给老师发邮件</mark></p><div class="example-flow" aria-hidden="true"><span></span><svg><use href="#i-down"/></svg><span></span></div><div class="extracted"><span class="todo-box"></span><div><strong>给老师发邮件</strong><span>待办 · 明早</span></div><span class="extract-label">AI 提取</span></div></article>
+      </div>
+      <div class="example-more"><div data-reveal><svg><use href="#i-link"/></svg><h4>关联与检索</h4><p>不同时间保存的相关论文、想法和笔记可以被关联起来；即使忘记原来的措辞，也能通过描述找回内容。</p></div><div data-reveal><svg><use href="#i-history"/></svg><h4>生活回顾</h4><p>整理一段时间内发生过的事情、完成过的任务和记录过的想法，并能追溯到对应的原始消息。</p></div></div>
+      <p class="concept-note" data-reveal>AI 整理的结果应当能够追溯来源。识别不准确时可以手动纠正；涉及提醒、删除或其他实际操作时，也需要考虑用户确认机制。</p>
+    </div>
+  </section>
+
+  <section class="security section-pad" id="security">
+    <div class="section-topline" data-reveal><span class="chapter">04 / 身份验证、安全与隐私</span><span class="marginal">从最初的设计就开始考虑</span></div>
+    <div class="security-intro"><div data-reveal><span class="security-emblem"><svg><use href="#i-shield"/></svg></span><h2>身份验证，<br>以及网络安全。</h2></div><div data-reveal><p>对于长期保存个人信息的应用，我希望从第一版开始，就认真处理身份验证、设备与会话管理、传输加密和数据访问控制。</p><p class="security-promise">安全措施将分阶段完善，<br>但基础安全不会推迟到后续版本。</p></div></div>
+    <div class="security-columns">
+      <article data-reveal><span class="security-phase">初期</span><h3>基本安全保障</h3><ul><li>安全身份认证</li><li>HTTPS 传输加密</li><li>数据访问控制</li><li>设备与会话管理</li><li>备份与恢复</li><li>基本限流与防护</li></ul><p>第一版就应具备与实际使用范围相匹配的基本安全措施，但不将早期自托管版本描述为经过全面安全审计的成熟产品。</p></article>
+      <article data-reveal><span class="security-phase">后续</span><h3>深入研究安全体系</h3><ul><li>多因素身份验证</li><li>多设备信任机制</li><li>数据加密与密钥管理</li><li>账号与数据恢复</li><li>安全测试及漏洞审查</li><li>多用户隔离与滥用防护</li></ul><p>具体安全模型尚未确定，需要专门的技术调研，并在公开测试或官方托管前完成相应的安全验证。</p></article>
+    </div>
+    <div class="privacy-note" data-reveal><svg><use href="#i-lock"/></svg><div><h3>AI 与隐私保护</h3><p>在架构层面区分数据存储与模型处理。初期考虑可配置的模型 API，未来也可以支持自托管模型。用户应当知道哪些数据会送往外部模型服务，并能控制处理范围。</p><p>端到端加密、服务端搜索、AI 整理与账号恢复之间的关系仍需研究。现阶段不提前承诺端到端加密或零知识存储，也不将 HTTPS 等同于服务器无法读取用户内容。</p></div></div>
+  </section>
+
+  <section class="architecture section-pad" id="architecture">
+    <div class="section-topline" data-reveal><span class="chapter">05 / 初步技术设想</span><span class="marginal">技术栈还没有完全定死</span></div>
+    <div class="architecture-heading" data-reveal><h2>先保存好，<br>再理解和整理。</h2><p>消息和附件先可靠保存，再由独立任务处理分类、摘要、信息提取、索引和关联。整理结果单独保存，模型可以更换，索引和整理结果也可以重新生成。</p></div>
+    <div class="tech-layout">
+      <div class="architecture-diagram" data-reveal>
+        <div class="arch-client"><svg><use href="#i-devices"/></svg><strong>跨平台客户端</strong><small>聊天界面 · 文件操作 · 本地缓存 · AI 整理视图</small></div>
+        <div class="arch-wire"><i></i><span>HTTPS / HTTP API</span></div>
+        <div class="arch-server"><svg><use href="#i-server"/></svg><div><strong>统一服务端</strong><small>身份认证 · 消息管理 · 文件管理 · 同步 · AI 任务</small></div></div>
+        <div class="arch-branches" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="arch-stores"><div><svg><use href="#i-database"/></svg><strong>消息数据库</strong><small>PostgreSQL</small></div><div><svg><use href="#i-folder"/></svg><strong>文件存储</strong><small>本地 / S3</small></div><div><svg><use href="#i-spark"/></svg><strong>AI 处理</strong><small>分类 / 提取 / 检索</small></div></div>
+        <div class="arch-backup"><svg><use href="#i-history"/></svg><span>数据备份、恢复与导出</span><small>独立备份 · 历史版本 · 恢复验证</small></div>
+        <span class="concept-note">初步架构示意，具体组件与部署方式尚未最终确定。</span>
+      </div>
+      <div class="tech-table" data-reveal><table><caption>目前主要考虑的方案</caption><tbody><tr><th scope="row">客户端 GUI</th><td>Flutter / Qt 等</td></tr><tr><th scope="row">Web 客户端</th><td>Flutter Web / React</td></tr><tr><th scope="row">服务端</th><td>Go</td></tr><tr><th scope="row">数据库</th><td>PostgreSQL</td></tr><tr><th scope="row">文件存储</th><td>本地文件系统 / S3 兼容存储</td></tr><tr><th scope="row">本地缓存</th><td>SQLite</td></tr><tr><th scope="row">消息同步</th><td>HTTP API + 增量同步</td></tr><tr><th scope="row">实时推送</th><td>后续按需加入 WebSocket</td></tr><tr><th scope="row">AI 模块</th><td>可配置模型 API / 自托管模型</td></tr><tr><th scope="row">部署</th><td>Docker Compose</td></tr></tbody></table></div>
+    </div>
+    <div class="tech-footnotes"><p data-reveal><strong>客户端体验</strong>桌面端希望采用独立的 UI 渲染方案，尽量避免简单的浏览器套壳。Web 端可以单独使用 Web 技术。</p><p data-reveal><strong>同步与可靠性</strong>只有服务端完成持久化确认后，才将消息标记为已保存到云端。附件也需要完整性校验。</p><p data-reveal><strong>部署成本</strong>初期采用模块化单体架构，优先支持 Docker Compose，不急于引入复杂的微服务与分布式系统。</p></div>
+  </section>
+
+  <section class="roadmap section-pad" id="roadmap">
+    <div class="section-topline" data-reveal><span class="chapter">06 / 开发阶段规划</span><span class="marginal">先建立可靠的数据基础</span></div>
+    <div class="roadmap-heading" data-reveal><h2>一步一步，<br>做成能长期用的样子。</h2><p>消息传输、云端长期保存和 AI 整理都属于核心能力。开发顺序并不代表功能重要性的排序。</p></div>
+    <ol class="timeline">
+      <li class="milestone" data-reveal><span class="milestone-number">01</span><div><span class="milestone-kicker">先做出能够实际使用的版本</span><h3>基础消息系统与自托管</h3><p>实现账号登录、初步身份验证与安全保障、消息收发、文件上传下载、服务端持久化、历史记录和基本搜索。优先完成 Web 或桌面端原型，支持 Docker Compose 部署。</p></div><span class="phase-tag">基础</span></li>
+      <li class="milestone" data-reveal><span class="milestone-number">02</span><div><span class="milestone-kicker">完成项目的另一项核心能力</span><h3>AI 整理与归纳</h3><p>接入自动分类、文件与图片分析、信息提取、关联整理和语义检索。重点实现待办、书影音清单、素材与学习资料整理，让结果能够追溯和修改，并完善 AI 处理私人数据时的授权与隐私控制。</p></div><span class="phase-tag">整理</span></li>
+      <li class="milestone" data-reveal><span class="milestone-number">03</span><div><span class="milestone-kicker">完善日常使用体验</span><h3>六平台客户端与个人信息管理</h3><p>逐步覆盖六个平台，完善多设备同时登录、离线缓存、消息漫游、搜索和文件预览。认真打磨 UI 和文本交互，并逐步完善待办、日程、收藏、标签和素材浏览。</p></div><span class="phase-tag">体验</span></li>
+      <li class="milestone" data-reveal><span class="milestone-number">04</span><div><span class="milestone-kicker">为公开使用做好准备</span><h3>长期可靠性与安全体系研究</h3><p>进一步完善备份恢复、数据导出、存储管理和故障恢复。专门研究身份验证、加密、密钥管理与隐私保护，进行必要的安全测试和问题修复。</p></div><span class="phase-tag">可靠性</span></li>
+      <li class="milestone" data-reveal><span class="milestone-number">05</span><div><span class="milestone-kicker">根据实际使用情况决定投入规模</span><h3>公开测试与官方托管</h3><p>在自托管版本足够稳定、经过必要安全验证后，再考虑扩大测试范围。如果反响不错，再建设官方托管服务，让不想自行部署的用户也能使用。</p></div><span class="phase-tag">以后</span></li>
+    </ol>
+  </section>
+
+  <section class="outro section-pad" id="outro">
+    <span class="outro-label" data-reveal>最后想做成的样子</span>
+    <h2 data-reveal>想到什么，<br>就直接发给自己<span>。</span></h2>
+    <div class="outro-bottom"><p data-reveal>不用专门整理，所有东西都能长期保存，需要的时候随时找回来。<br>也能在很多年后翻一翻，看看过去的日子究竟是怎么度过的。</p><a class="outro-back" href="#top" aria-label="返回顶部"><svg><use href="#i-arrow"/></svg></a></div>
+    <div class="project-status" data-reveal><span class="status-dot"></span><p>目前仍处于项目构想阶段。具体功能、技术方案与开发顺序都有调整空间。<br>此页展示的是希望实现的产品形态，不代表相关功能已经完成。</p><span>CONCEPT, NOT YET BUILT.</span></div>
+  </section>
+</main>
+<footer class="site-footer"><a class="footer-brand" href="#top"><svg><use href="#i-message"/></svg> 一个只和自己聊天的 App</a><span>概念示意 · 相关功能尚待开发</span><span>项目设想 / 尚未命名</span></footer>
+</body>
+</html>
